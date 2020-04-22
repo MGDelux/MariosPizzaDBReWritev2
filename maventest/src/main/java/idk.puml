@@ -1,0 +1,15 @@
+@startuml
+
+abstract class AbstractList
+abstract AbstractCollection
+interface List
+interface Collection
+
+class ArrayList {
+int OwO;
+size()
+}
+ArrayList->AbstractList
+
+
+@enduml
