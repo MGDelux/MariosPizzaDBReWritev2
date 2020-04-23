@@ -2,9 +2,6 @@ package View;
 
 import java.sql.SQLException;
 import java.util.Scanner;
-
-import DataMapper.MenuKortRead;
-import DataMapper.OrderRead;
 import Model.*;
 import Util.*;
 
@@ -20,10 +17,11 @@ public class MainController {
                 " Press: [1] To place an order. \n" +
                 " Press: [2] To show all orders. \n" +
                 " Press: [3] To show only active orders. \n" +
-                " Press: [4] To change an active order to status 'delivered'. \n" +
+                " Press: [4] To change an active order to status 'complete'. \n" +
                 " Press: [5] To delete an order. \n" +
-                " Press: [6] To calculate today's earnings. \n" +
-                " Press: [7] To export today's orders to file and exit.";
+                " Press: [6] To calculate total earnings. \n" +
+                " Press: [7] To Show statistics. \n " +
+                "Press: [8] To DEV OPTION";
         System.out.println(PrintMainMenuText);
         System.out.print("\nEnter your option: ");
         String userOption = userInput.nextLine();
@@ -47,14 +45,20 @@ public class MainController {
                 printMainMenu();
                 break;
             case 5:
-                //   orderBook.deleteOrder(orderBook.getOrders());
-
+           ordreController.deleteOrder();
+                printMainMenu();
                 break;
             case 6:
-                //    orderBook.calculateIncome();
+                ordreController.calculateIncome();
+                printMainMenu();
                 break;
             case 7:
-                //  write.exportData(orderBook.getOrders());
+                ordreController.Getstatistics();
+                printMainMenu();
+                break;
+            case 8:
+                ordreController.devOption();
+                printMainMenu();
                 break;
 
             default:

@@ -1,5 +1,6 @@
 package DataMapper;
 
+import Model.Order;
 import Model.Pizza;
 
 import java.sql.*;
@@ -65,6 +66,34 @@ public class OrderRead {
         } catch (SQLException e) {
             System.out.println(e);
         }
+    }
+
+    public void CalculateIncome( ) {
+        double temppris= 0;
+        int counter = 0;
+        try (
+
+                Connection conn = DriverManager.getConnection(CONN_STR, USERNAME, PASSWORD);
+                Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+                ResultSet rs = ((Statement) stmt).executeQuery("SELECT * FROM MariosPizza.Ordre")
+        ) {
+            while (rs.next()) {
+                counter++;
+                StringBuffer buffer = new StringBuffer();
+                buffer.append(rs.getDouble("pizza_price"));
+               temppris = temppris + Double.parseDouble(buffer.toString());
+            }
+
+            System.out.println("A total of "+counter+ " orders placed, equals: "+ temppris +" ddk in profit");
+        } catch (SQLException e) {
+            System.out.println(e); //FIX IT
+        }
+
+    }
+
+    public void Showstatistics() {
+
     }
 }
 

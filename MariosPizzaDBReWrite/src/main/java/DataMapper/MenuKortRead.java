@@ -24,8 +24,6 @@ public class MenuKortRead {
                 Pizza temp = new Pizza(rs.getInt("pizza_id"), rs.getString("pizza_name"), rs.getDouble("pizza_price"));
                 tempPizzas.add(temp);
             }
-
-
         } catch (SQLException e) {
             //Different error messages
             System.out.println(e);

@@ -3,14 +3,13 @@ package Model;
 import DataMapper.MenuKortRead;
 import DataMapper.OrderRead;
 import DataMapper.OrderWrite;
-
-import java.security.PublicKey;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class OrdreController {
+    double temppris = 0;
     static int tempUID = 0;
     OrderRead readData = new OrderRead();
     String tempCustomerName;
@@ -19,7 +18,7 @@ public class OrdreController {
     LocalDateTime tempOrderTime;
     ArrayList<Pizza> tempPizza;
     MenuKort menu = new MenuKort();
-    OrderWrite exportOrder = new OrderWrite();
+    OrderWrite writeToDB = new OrderWrite();
     Order newOrder;
     Scanner userInput = new Scanner(System.in);
     OrderRead orderRead = new OrderRead();
@@ -65,7 +64,7 @@ public class OrdreController {
     }
 
     private void completeOrder() throws SQLException {
-        exportOrder.exportData(newOrder);
+        writeToDB.exportData(newOrder);
 
     }
 
@@ -103,14 +102,13 @@ public class OrdreController {
     }
 
     public double generatePris() {
-        double pris = 0;
         for (Pizza p : newOrder.getPizzasInOrder()) {
-            pris = pris + p.getPizzaPrice();
-            newOrder.setTotalOrderPrice(pris);
-            tempPris = pris;
+            temppris = temppris + p.getPizzaPrice();
+            newOrder.setTotalOrderPrice(temppris);
+            tempPris = temppris;
 
         }
-        return pris;
+        return temppris;
 
     }
 
@@ -123,7 +121,41 @@ public class OrdreController {
         System.out.println("What Order do you want to change?");
         String orderInput = userInput.nextLine();
         int choice = Integer.parseInt(orderInput);
-        exportOrder.changeOrderStatus(choice);
+        writeToDB.changeOrderStatus(choice);
+
+    }
+
+    public void deleteOrder() {
+        showAllOrders();
+        System.out.println("What Order do you want to change?");
+        String orderInput = userInput.nextLine();
+        int choice = Integer.parseInt(orderInput);
+        writeToDB.DeleteOrder(choice);
+
+    }
+
+    public void calculateIncome() {
+        System.out.println("Getting total income...");
+        orderRead.CalculateIncome();
+    }
+
+    public void Getstatistics() {
+        System.out.println("Please wait retrieving statistics...\n");
+        orderRead.Showstatistics();
+    }
+
+    public void devOption() {
+        System.out.println("Are you sure want to wipe the database?\n0 for no 1 for yes.");
+        String orderInput = userInput.nextLine();
+        int choice = Integer.parseInt(orderInput);
+        if(choice==0){
+            System.out.println("action aborted");
+
+        }else {
+            System.out.println("No going back now.\n TRUNCATING TABLE");
+            writeToDB.turnCateTable();
+        }
+
 
     }
 }
