@@ -72,7 +72,7 @@ public class OrdreRead {
             while (rs.next()) {
 
                 StringBuffer buffer = new StringBuffer();
-                buffer.append("Ordre NR# " + rs.getInt("pizza_ordreNR") + " : Customer " + rs.getString("Order_Customer_Name") + ", Pizza: " + rs.getString("pizza_name") + " Ordre tid: " + rs.getTime("pizza_ordretid") + " Ordre Pris: " + rs.getDouble("pizza_price") + " Order status: " + rs.getInt("pizza_ordre_Status"));
+                buffer.append("Ordre NR# " + rs.getInt("pizza_ordreID") + " : Customer " + rs.getString("Order_Customer_Name") + ", Pizza: " + rs.getString("pizza_name") + " Ordre tid: " + rs.getTime("pizza_ordretid") + " Ordre Pris: " + rs.getDouble("pizza_price") + " Order status: " + rs.getInt("pizza_ordre_Status"));
                 System.out.println(buffer.toString());
             }
         } catch (SQLException e) {

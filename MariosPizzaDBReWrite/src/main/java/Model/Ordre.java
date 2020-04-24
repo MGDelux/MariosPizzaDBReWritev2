@@ -4,22 +4,52 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Ordre {
+    boolean homeDelivery;
     static int orderUID= 0;
     int orderTimeLength = 0;
-    String customerName;
+    String customerName = null;
+    String homeAdress = null;
+    int phoneNumber = 0;
     LocalDateTime datetime;
     Boolean ordreStatus;
     double totalOrdrePrice = 0;
     ArrayList<Pizza> pizzasInOrdre = new ArrayList<>();
 
-    public Ordre(int orderUID, int orderTimeLength, String customerName, Boolean ordreStatus, double totalOrdrePrice, ArrayList<Pizza> pizzas, LocalDateTime datetime) {
-        this.orderUID = orderUID;
+    public boolean isHomeDelivery() {
+        return homeDelivery;
+    }
+
+
+    public void setHomeDelivery(boolean homeDelivery) {
+        this.homeDelivery = homeDelivery;
+    }
+
+    public String getHomeAdress() {
+        return homeAdress;
+    }
+
+    public void setHomeAdress(String homeAdress) {
+        this.homeAdress = homeAdress;
+    }
+
+    public int getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(int phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Ordre(boolean homeDelivery, int orderTimeLength, String customerName, String homeAdress, int phoneNumber, Boolean ordreStatus, double totalOrdrePrice, ArrayList<Pizza> pizzasInOrdre) {
+        this.homeDelivery = homeDelivery;
         this.orderTimeLength = orderTimeLength;
         this.customerName = customerName;
+        this.homeAdress = homeAdress;
+        this.phoneNumber = phoneNumber;
+        this.datetime = getDatetime();
         this.ordreStatus = ordreStatus;
         this.totalOrdrePrice = totalOrdrePrice;
-        this.pizzasInOrdre = pizzas;
-        this.datetime = datetime;
+        this.pizzasInOrdre = pizzasInOrdre;
     }
 
 
@@ -88,6 +118,11 @@ public class Ordre {
                 +getOrderTimeLength() + " Minutes, "
                 + pizzasInOrdre + ", "
                 + totalOrdrePrice + " DDK,-";
+        if(isHomeDelivery() == true){
+            format = format + "Home delivery: "+ homeDelivery+
+            ", Adresse: "+ homeAdress + ", "+
+            "Phone number: "+ phoneNumber;
+        }
         return format;
     }
 }

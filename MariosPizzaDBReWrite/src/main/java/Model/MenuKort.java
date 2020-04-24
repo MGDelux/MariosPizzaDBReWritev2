@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 public class MenuKort {
     static ArrayList<Pizza> pizzas = new ArrayList<>();
-
+public void wipePizzas(){
+    pizzas.clear();
+}
     public void AddPizzaToArray(ArrayList<Pizza> temp) {
         for (Pizza p : temp) {
             pizzas.add(p);

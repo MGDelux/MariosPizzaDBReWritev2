@@ -1,0 +1,68 @@
+@startuml
+
+class Main {
+mainControler():void
+}
+
+class Pizza {
+pizzaNumber:int
+pizzaName:String
+pizzaPrice:double
+thePizza:Pizza
+pizzas:ArrayList<Pizza>
+importPizzaFromFileIntoArray():ArrayList<Pizza>
+getPizzaByNR(int):Pizza
+getPizzaPrice():double
+toString():String
+}
+
+class MenuKort{
+importedPizzas:ArrayList<Pizza>
+importFile:Import
+printMenu():void
+}
+
+class Order{
+ordreUID:int
+count:int
+ordreTid:String
+kundeNavn:String
+customerName:String
+formatedPizzas:String
+ordreStatus:boolean
+totalOrderPris:double
+totalPrice:double
+pizza:ArrayList<Pizza>
+selectedPizzas:ArrayList<Pizza>
+thePizza:Pizza
+scan:Scanner
+generateOrderUID():int
+generateOrderTime():String
+askCustomerName():String
+askPizza():ArrayList<Pizza>
+setOrdreStatus(boolean):void
+generatePris():double
+getOrderUID():int
+formatSelectedPizzasToString():String
+toString():String
+}
+
+class MenuController{
+orders:ArrayList<Order>
+activeOrder:ArrayList<Order>
+scan:Scanner
+makeAnOrder():void
+displayAllOrders():void
+displayActiveOrders():void
+changeOrder():void
+deleteOrder(ArrayList<Order>):void
+calculateIncome():void
+getOrders():ArrayList<Order>
+}
+
+Main <|-- MenuKort
+Main <|-- OrderBook
+MenuKort o-- Pizza
+OrderBook o-- Order
+
+@enduml

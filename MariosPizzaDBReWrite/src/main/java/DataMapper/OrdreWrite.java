@@ -18,35 +18,91 @@ public class OrdreWrite {
     public void exportData(Ordre orders) throws SQLException {
         temporder = new ArrayList<>();
         temporder.add(orders);
-        try {
-            Date CreatedDate = new Date(System.currentTimeMillis());
-            //'Connection', 'Statement' and 'ResultSet' are AUTO-CLOSABLE when with TRY-WITH-RESOURCES BLOCK (...)
-            Connection conn = DriverManager.getConnection(CONN_STR, USERNAME, PASSWORD);
-            for (Pizza p : orders.getPizzasInOrdre()) {
-                tempPizzaCounter++;
-                String query = " INSERT INTO MariosPizza.Ordre ( pizza_OrdreID, pizza_name, ordre_Total_Price, Order_Customer_Name, pizza_price)"
-                        + " values (?, ?, ?, ?, ?)";
-                for (Ordre o : temporder) {
-                    String pizzas = orders.getPizzasInOrdre().get(tempPizzaCounter - 1).toString();
-                    Pizza pizza = o.getPizzasInOrdre().get(tempPizzaCounter - 1);
-                    Double getpris = pizza.getPizzaPrice();
-                    PreparedStatement preparedStatement = conn.prepareStatement(query);
-                    preparedStatement.setInt(1, o.getOrderUID());
-                    preparedStatement.setString(2, pizzas);
-                    preparedStatement.setDouble(3, o.getTotalOrdrePrice());
-                    preparedStatement.setString(4, o.getCustomerName());
-                    preparedStatement.setDouble(5, getpris);
-                    preparedStatement.execute();
-                    tempUID = o.getOrderUID();
-                    // conn.close();
+        if (orders.isHomeDelivery() == true) {
+            try {
+                Connection conn = DriverManager.getConnection(CONN_STR, USERNAME, PASSWORD);
+                for (Pizza p : orders.getPizzasInOrdre()) {
+                    tempPizzaCounter++;
+                    String query = " INSERT INTO MariosPizza.Ordre ( pizza_OrdreID, pizza_name, ordre_Total_Price, Order_Customer_Name, pizza_price, home_delivery)"
+                            + " values (?, ?, ?, ?, ?, ?)";
+                    for (Ordre o : temporder) {
+                        String pizzas = orders.getPizzasInOrdre().get(tempPizzaCounter - 1).toString();
+                        Pizza pizza = o.getPizzasInOrdre().get(tempPizzaCounter - 1);
+                        Double getpris = pizza.getPizzaPrice();
+                        PreparedStatement preparedStatement = conn.prepareStatement(query);
+                        preparedStatement.setInt(1, o.getOrderUID());
+                        preparedStatement.setString(2, pizzas);
+                        preparedStatement.setDouble(3, o.getTotalOrdrePrice());
+                        preparedStatement.setString(4, o.getCustomerName());
+                        preparedStatement.setDouble(5, getpris);
+                        preparedStatement.setBoolean(6,o.isHomeDelivery());
+                        preparedStatement.execute();
+                        tempUID = o.getOrderUID();
+                    }
                 }
+                String query = " INSERT INTO MariosPizza.Customer_Infomation (Customer_Name, Customer_PhoneNr, Customer_Adresse)"
+                        + " values (?, ?, ?)";
+                PreparedStatement preparedStatement = conn.prepareStatement(query);
+
+                preparedStatement = conn.prepareStatement(query);
+                preparedStatement.setString(1, orders.getCustomerName());
+                preparedStatement.setInt(2, orders.getPhoneNumber());
+                preparedStatement.setString(3, orders.getHomeAdress());
+                preparedStatement.execute();
+                int tempPizzaCounter = 0;
+
+            } catch (SQLException e) {
+                System.out.println(e);
 
             }
             System.out.println("Order: UID#" + tempUID + " Confirmed! with " + tempPizzaCounter + " Pizzas in the order!");
-            tempPizzaCounter = 0;
-        } catch (Exception e) {
-            System.out.println("Database MYSQL ERROR! " + e);
+
+        }else if (orders.isHomeDelivery() == false) {
+
+            try {
+                Connection conn = DriverManager.getConnection(CONN_STR, USERNAME, PASSWORD);
+                for (Pizza p : orders.getPizzasInOrdre()) {
+                    tempPizzaCounter++;
+                    String query = " INSERT INTO MariosPizza.Ordre ( pizza_OrdreID, pizza_name, ordre_Total_Price, Order_Customer_Name, pizza_price, home_delivery)"
+                            + " values (?, ?, ?, ?, ?, ?)";
+                    for (Ordre o : temporder) {
+                        String pizzas = orders.getPizzasInOrdre().get(tempPizzaCounter - 1).toString();
+                        Pizza pizza = o.getPizzasInOrdre().get(tempPizzaCounter - 1);
+                        Double getpris = pizza.getPizzaPrice();
+                        PreparedStatement preparedStatement = conn.prepareStatement(query);
+                        preparedStatement.setInt(1, o.getOrderUID());
+                        preparedStatement.setString(2, pizzas);
+                        preparedStatement.setDouble(3, o.getTotalOrdrePrice());
+                        preparedStatement.setString(4, o.getCustomerName());
+                        preparedStatement.setDouble(5, getpris);
+                        preparedStatement.setBoolean(6, o.isHomeDelivery());
+                        preparedStatement.execute();
+                        tempUID = o.getOrderUID();
+                        // conn.close();
+                    }
+
+                }
+                System.out.println("Order: UID#" + tempUID + " Confirmed! with " + tempPizzaCounter + " Pizzas in the order!");
+                tempPizzaCounter = 0;
+            } catch (Exception e) {
+                System.out.println("Database MYSQL ERROR! " + e);
+            }
+            Connection conn = DriverManager.getConnection(CONN_STR, USERNAME, PASSWORD);
+
+            String query = " INSERT INTO MariosPizza.Customer_Infomation (Customer_Name, Customer_PhoneNr, Customer_Adresse)"
+                    + " values (?, ?, ?)";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+
+            preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, orders.getCustomerName());
+            preparedStatement.setInt(2, orders.getPhoneNumber());
+            preparedStatement.setString(3, orders.getHomeAdress());
+            preparedStatement.execute();
+            int tempPizzaCounter = 0;
+
         }
+        tempPizzaCounter = 0;
+
     }
 
     public void addNewPizzaMenu(int iD, String navn, double pris) throws SQLException {
@@ -66,6 +122,7 @@ public class OrdreWrite {
         } catch (Exception e) {
             System.out.println("Database MYSQL ERROR! " + e);
         }
+
     }
 
     public void flagPizza(int nR) {
@@ -91,7 +148,7 @@ public class OrdreWrite {
             //'Connection', 'Statement' and 'ResultSet' are AUTO-CLOSABLE when with TRY-WITH-RESOURCES BLOCK (...)
             Connection conn = DriverManager.getConnection(CONN_STR, USERNAME, PASSWORD);
 
-            String query = " UPDATE MariosPizza.Ordre SET pizza_ordre_Status = 1 WHERE pizza_ordreNR =" + UID;
+            String query = " UPDATE MariosPizza.Ordre SET pizza_ordre_Status = 1 WHERE pizza_ordreID =" + UID;
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.execute();
             // conn.close();
@@ -110,7 +167,7 @@ public class OrdreWrite {
             //'Connection', 'Statement' and 'ResultSet' are AUTO-CLOSABLE when with TRY-WITH-RESOURCES BLOCK (...)
             Connection conn = DriverManager.getConnection(CONN_STR, USERNAME, PASSWORD);
 
-            String query = "	UPDATE MariosPizza.Ordre SET pizza_ordre_Status = 2 WHERE pizza_ordreNR =" + UID;
+            String query = "	UPDATE MariosPizza.Ordre SET pizza_ordre_Status = 2 WHERE pizza_OrdreID =" + UID;
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.execute();
             // conn.close();

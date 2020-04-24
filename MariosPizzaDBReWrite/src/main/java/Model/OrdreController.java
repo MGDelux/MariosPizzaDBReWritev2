@@ -9,12 +9,15 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class OrdreController { // MANY TEMP Data types
-    double temppris = 0;
+   Boolean tempHomeDelivery = true;
+    double temppris = 0.0;
     static int tempUID = 0;
     OrdreRead readData = new OrdreRead();
-    String tempCustomerName;
-    int tempOrderTimeLenght;
-    double tempPris;
+    String tempCustomerFullName;
+    int tempPhoneNumber = 0;
+    String tempAddress  = "";
+    int tempOrderTimeLenght = 0;
+    double tempPris = 0;
     LocalDateTime tempOrderTime;
     ArrayList<Pizza> tempPizza;
     MenuKort menu = new MenuKort();
@@ -27,7 +30,9 @@ public class OrdreController { // MANY TEMP Data types
     public void mySQLUIDCheck(){
         tempUID = readData.getOrderHighestID();
     }
-
+public void clearMenuKort(){
+        menu.wipePizzas();
+}
     public void populateMenuKort(){
         menu.setPizzas(importMenuKort.getQueryJDBC());
     }
@@ -57,8 +62,9 @@ public class OrdreController { // MANY TEMP Data types
     }
 
     public void makeOrder() throws SQLException {
-        newOrdre = new Ordre(tempUID, tempOrderTimeLenght, tempCustomerName, false, tempPris, tempPizza, tempOrderTime);
-        getCustomerName();
+        newOrdre = new Ordre(tempHomeDelivery,tempOrderTimeLenght,tempCustomerFullName,tempAddress,tempPhoneNumber,false,tempPris,tempPizza);
+        checkIfDeliveryOrdre();
+        getCustomerInfomation();
         getOrderTime();
         setOrderLength();
         addPizzasToOrder();
@@ -67,11 +73,49 @@ public class OrdreController { // MANY TEMP Data types
 
     }
 
-    public String getCustomerName() {
-        System.out.println("Type customer name:");
-        tempCustomerName = userInput.nextLine();
-        newOrdre.setCustomerName(tempCustomerName);
-        return tempCustomerName;
+    private void checkIfDeliveryOrdre() {
+        System.out.println("Is this order going to be delivered?\n [1] For YES, [0] For NO,");
+        int tempAnswer;
+        tempAnswer = Integer.parseInt(userInput.nextLine());
+        switch (tempAnswer){
+            case 0:
+                tempHomeDelivery = false;
+                newOrdre.homeDelivery = false;
+
+                break;
+            case 1:
+                newOrdre.homeDelivery = true;
+                tempHomeDelivery = true;
+                break;
+            default:
+                newOrdre.homeDelivery = false;
+                break;
+        }
+
+
+
+    }
+
+    public String getCustomerInfomation() {
+        if (tempHomeDelivery == true)
+        {
+            System.out.println("\nType customer name:");
+            tempCustomerFullName = userInput.nextLine();
+            newOrdre.setCustomerName(tempCustomerFullName);
+            System.out.println("\nType customer phone number:");
+            tempPhoneNumber = Integer.parseInt(userInput.nextLine());
+            newOrdre.setPhoneNumber(tempPhoneNumber);
+            System.out.println("\nType customer Address:");
+            tempAddress = userInput.nextLine();
+            newOrdre.setHomeAdress(tempAddress);
+
+            return tempCustomerFullName + tempPhoneNumber + tempPhoneNumber;
+        }
+        else
+            System.out.println("Type customer name:");
+            tempCustomerFullName = userInput.nextLine();
+            newOrdre.setCustomerName(tempCustomerFullName);
+            return tempCustomerFullName;
     }
 
     public int generateOrderUID() throws SQLException {

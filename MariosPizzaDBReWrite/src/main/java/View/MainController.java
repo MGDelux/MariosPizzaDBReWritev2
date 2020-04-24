@@ -62,12 +62,14 @@ public class MainController {
             case 8:
                 ordreController.getPizzas();
                 menucontroller.createPizza();
+                ordreController.clearMenuKort();
                 ordreController.populateMenuKort();
                 printMainMenu();
                 break;
             case 9:
                 ordreController.getPizzas();
                 menucontroller.deltetePizza();
+                ordreController.clearMenuKort();
                 ordreController.populateMenuKort();
                 printMainMenu();
                 break;
