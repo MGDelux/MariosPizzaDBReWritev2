@@ -21,7 +21,7 @@ public class MenuKortRead {
 
                 StringBuffer buffer = new StringBuffer();
                 buffer.append("Pizza: " + rs.getInt("pizza_id") + " : " + rs.getString("pizza_name") + ", Price: " + rs.getDouble("pizza_price"));
-                Pizza temp = new Pizza(rs.getInt("pizza_id"), rs.getString("pizza_name"), rs.getDouble("pizza_price"));
+                Pizza temp = new Pizza(rs.getInt("pizza_id"), rs.getString("pizza_name"), rs.getDouble("pizza_price"), rs.getInt("pizza_status"));
                 tempPizzas.add(temp);
             }
         } catch (SQLException e) {

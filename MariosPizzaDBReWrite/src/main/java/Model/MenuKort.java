@@ -3,9 +3,9 @@ package Model;
 import java.util.ArrayList;
 
 public class MenuKort {
-    ArrayList<Pizza> pizzas = new ArrayList<>();
+    static ArrayList<Pizza> pizzas = new ArrayList<>();
 
-    private void AddPizzaToArray(ArrayList<Pizza> temp) {
+    public void AddPizzaToArray(ArrayList<Pizza> temp) {
         for (Pizza p : temp) {
             pizzas.add(p);
         }

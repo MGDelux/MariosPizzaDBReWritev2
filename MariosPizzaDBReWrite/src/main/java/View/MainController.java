@@ -9,9 +9,10 @@ public class MainController {
     boolean sqlCheck = true;
     Scanner userInput = new Scanner(System.in);
     OrdreController ordreController = new OrdreController();
+    MenuController menucontroller = new MenuController();
 
     public void printMainMenu() throws SQLException {
-        initalizeSQLDB();//SQL Stuff
+        initalizeSQLDB();//åbner og checker mysql forbindelse
         String PrintMainMenuText = "\nMario's Pizzaria\n" +
                 " -Menu:\n" +
                 " Press: [1] To place an order. \n" +
@@ -21,14 +22,16 @@ public class MainController {
                 " Press: [5] To delete an order. \n" +
                 " Press: [6] To calculate total earnings. \n" +
                 " Press: [7] To Show statistics. \n " +
-                "Press: [8] To DEV OPTION";
+                "Press: [8] To add a new pizza to the menu. \n "+
+                "Press: [9] To delete a pizza from the menu.\n"+
+                "Press:  [404] FOR DEV OPTIONS";
         System.out.println(PrintMainMenuText);
         System.out.print("\nEnter your option: ");
         String userOption = userInput.nextLine();
         int choice = Integer.parseInt(userOption);
         switch (choice) {
             case 1:
-                //  newOrder = new Order(tempUID, tempOrderTimeLenght, tempCustomerName, false, tempPris, tempPizza, tempOrderTime);
+                ordreController.getPizzas();
                 ordreController.makeOrder();
                 printMainMenu();
                 break;
@@ -57,6 +60,18 @@ public class MainController {
                 printMainMenu();
                 break;
             case 8:
+                ordreController.getPizzas();
+                menucontroller.createPizza();
+                ordreController.populateMenuKort();
+                printMainMenu();
+                break;
+            case 9:
+                ordreController.getPizzas();
+                menucontroller.deltetePizza();
+                ordreController.populateMenuKort();
+                printMainMenu();
+                break;
+            case 404:
                 ordreController.devOption();
                 printMainMenu();
                 break;
@@ -71,13 +86,13 @@ public class MainController {
     }
 
     private void initalizeSQLDB() {
-        if (sqlCheck == true) {
+        if (sqlCheck == true) { // check for at gøre at koden kun bliver kørt en gang per start.
             try {
                 sqlCheck = false;
                 System.out.println("Attempting to Instance Database...");
                 DBConnect.getInstance(); // Checking Connection
-                ordreController.populateMenuKort();
-                ordreController.mySQLUIDCheck();
+                ordreController.populateMenuKort(); //Tilføjere pizzaere fra vores Db til program
+                ordreController.mySQLUIDCheck(); // checker den højeste 'UID' og setter den som default value
                 System.out.println("SQL connected and Checks complete");
             } catch (Exception e) {
                 System.out.println("MYSQL ERROR! :" + e);

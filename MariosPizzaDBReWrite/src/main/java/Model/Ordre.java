@@ -1,25 +1,24 @@
 package Model;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class Order {
+public class Ordre {
     static int orderUID= 0;
     int orderTimeLength = 0;
     String customerName;
     LocalDateTime datetime;
-    Boolean orderStatus;
-    double totalOrderPrice = 0;
-    ArrayList<Pizza> pizzasInOrder = new ArrayList<>();
+    Boolean ordreStatus;
+    double totalOrdrePrice = 0;
+    ArrayList<Pizza> pizzasInOrdre = new ArrayList<>();
 
-    public Order(int orderUID, int orderTimeLength, String customerName, Boolean orderStatus, double totalOrderPrice, ArrayList<Pizza> pizzas, LocalDateTime datetime) {
+    public Ordre(int orderUID, int orderTimeLength, String customerName, Boolean ordreStatus, double totalOrdrePrice, ArrayList<Pizza> pizzas, LocalDateTime datetime) {
         this.orderUID = orderUID;
         this.orderTimeLength = orderTimeLength;
         this.customerName = customerName;
-        this.orderStatus = orderStatus;
-        this.totalOrderPrice = totalOrderPrice;
-        this.pizzasInOrder = pizzas;
+        this.ordreStatus = ordreStatus;
+        this.totalOrdrePrice = totalOrdrePrice;
+        this.pizzasInOrdre = pizzas;
         this.datetime = datetime;
     }
 
@@ -44,17 +43,17 @@ public class Order {
         return customerName;
     }
 
-    public Boolean getOrderStatus() {
-        return orderStatus;
+    public Boolean getOrdreStatus() {
+        return ordreStatus;
     }
 
-    public double getTotalOrderPrice() {
-        return totalOrderPrice;
+    public double getTotalOrdrePrice() {
+        return totalOrdrePrice;
     }
 
 
-    public ArrayList<Pizza> getPizzasInOrder() {
-        return pizzasInOrder;
+    public ArrayList<Pizza> getPizzasInOrdre() {
+        return pizzasInOrdre;
     }
 
     public void setOrderUID(int orderUID) {
@@ -69,16 +68,16 @@ public class Order {
         this.customerName = customerName;
     }
 
-    public void setOrderStatus(Boolean orderStatus) {
-        this.orderStatus = orderStatus;
+    public void setOrdreStatus(Boolean ordreStatus) {
+        this.ordreStatus = ordreStatus;
     }
 
-    public void setTotalOrderPrice(double totalOrderPrice) {
-        this.totalOrderPrice = totalOrderPrice;
+    public void setTotalOrdrePrice(double totalOrdrePrice) {
+        this.totalOrdrePrice = totalOrdrePrice;
     }
 
-    public void setPizzasInOrder(ArrayList<Pizza> pizzasInOrder) {
-        this.pizzasInOrder = pizzasInOrder;
+    public void setPizzasInOrdre(ArrayList<Pizza> pizzasInOrdre) {
+        this.pizzasInOrdre = pizzasInOrdre;
     }
 
     @Override
@@ -87,8 +86,8 @@ public class Order {
                 + datetime + ", Customer name: "
                 + customerName + ", Estimated order time: "
                 +getOrderTimeLength() + " Minutes, "
-                + pizzasInOrder + ", "
-                + totalOrderPrice + " DDK,-";
+                + pizzasInOrdre + ", "
+                + totalOrdrePrice + " DDK,-";
         return format;
     }
 }

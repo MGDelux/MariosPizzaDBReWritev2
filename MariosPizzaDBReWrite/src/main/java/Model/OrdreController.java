@@ -1,27 +1,27 @@
 package Model;
 
 import DataMapper.MenuKortRead;
-import DataMapper.OrderRead;
-import DataMapper.OrderWrite;
+import DataMapper.OrdreRead;
+import DataMapper.OrdreWrite;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class OrdreController {
+public class OrdreController { // MANY TEMP Data types
     double temppris = 0;
     static int tempUID = 0;
-    OrderRead readData = new OrderRead();
+    OrdreRead readData = new OrdreRead();
     String tempCustomerName;
     int tempOrderTimeLenght;
     double tempPris;
     LocalDateTime tempOrderTime;
     ArrayList<Pizza> tempPizza;
     MenuKort menu = new MenuKort();
-    OrderWrite writeToDB = new OrderWrite();
-    Order newOrder;
+    OrdreWrite writeToDB = new OrdreWrite();
+    Ordre newOrdre;
     Scanner userInput = new Scanner(System.in);
-    OrderRead orderRead = new OrderRead();
+    OrdreRead ordreRead = new OrdreRead();
     MenuKortRead importMenuKort = new MenuKortRead();
 
     public void mySQLUIDCheck(){
@@ -31,14 +31,33 @@ public class OrdreController {
     public void populateMenuKort(){
         menu.setPizzas(importMenuKort.getQueryJDBC());
     }
+    public void getPizzas() {
+        ArrayList<Pizza> temp = new ArrayList<>();
+        temp = menu.getPizzas();
+        for (Pizza pizza : temp) {
+            if (pizza.pizzaStatus == 0) {
+                System.out.println("#" + pizza.pizzaNR + " " + pizza.toString() + " " + pizza.pizzaPrice + " KR.");
+            }
+        }
+    }
+    public void getSpecficPizza(int id){
+        ArrayList<Pizza> temp = new  ArrayList<>();
+        temp = menu.getPizzas();
+        for (Pizza pizza: temp) {
+            if (pizza.pizzaNR == id) {
+                System.out.println("#" + pizza.pizzaNR + " " + pizza.toString() + " " + pizza.pizzaPrice + " KR.");
+            }
+
+        }
+    }
 
     public void showAllOrders() {
-        orderRead.getMenuKort();
+        ordreRead.getOrders();
 
     }
 
     public void makeOrder() throws SQLException {
-        newOrder = new Order(tempUID, tempOrderTimeLenght, tempCustomerName, false, tempPris, tempPizza, tempOrderTime);
+        newOrdre = new Ordre(tempUID, tempOrderTimeLenght, tempCustomerName, false, tempPris, tempPizza, tempOrderTime);
         getCustomerName();
         getOrderTime();
         setOrderLength();
@@ -51,20 +70,20 @@ public class OrdreController {
     public String getCustomerName() {
         System.out.println("Type customer name:");
         tempCustomerName = userInput.nextLine();
-        newOrder.setCustomerName(tempCustomerName);
+        newOrdre.setCustomerName(tempCustomerName);
         return tempCustomerName;
     }
 
     public int generateOrderUID() throws SQLException {
         tempUID++;
-        newOrder.setOrderUID(tempUID);
-        System.out.println(newOrder.toString());
+        newOrdre.setOrderUID(tempUID);
+        System.out.println(newOrdre.toString());
         completeOrder();
         return tempUID;
     }
 
     private void completeOrder() throws SQLException {
-        writeToDB.exportData(newOrder);
+        writeToDB.exportData(newOrdre);
 
     }
 
@@ -73,7 +92,7 @@ public class OrdreController {
         // DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         // String dateTimeFormatted = now.format(format);
         //LocalDateTime formattedcomplete = LocalDateTime.parse(now);
-        newOrder.setDatetime(now);
+        newOrdre.setDatetime(now);
         tempOrderTime = now;
         return now;
 
@@ -83,7 +102,7 @@ public class OrdreController {
         System.out.println("\nHow long will it take to complete this order ? in minutes.");
         String tempOrderLenght = userInput.nextLine();
         int tempOrdreLength = Integer.parseInt(tempOrderLenght);
-        newOrder.setOrderTimeLength(tempOrdreLength);
+        newOrdre.setOrderTimeLength(tempOrdreLength);
         tempOrderTimeLenght = tempOrdreLength;
         return tempOrdreLength;
     }
@@ -96,15 +115,15 @@ public class OrdreController {
         int tempIpizza = pizzaSplitter.length;
         for (int i = 0; i < tempIpizza; i++) {
             tempPizza.add(menu.GetPizzaByNR(Integer.parseInt(pizzaSplitter[i])));
-            newOrder.setPizzasInOrder(tempPizza);
+            newOrdre.setPizzasInOrdre(tempPizza);
         }
         return tempPizza;
     }
 
     public double generatePris() {
-        for (Pizza p : newOrder.getPizzasInOrder()) {
+        for (Pizza p : newOrdre.getPizzasInOrdre()) {
             temppris = temppris + p.getPizzaPrice();
-            newOrder.setTotalOrderPrice(temppris);
+            newOrdre.setTotalOrdrePrice(temppris);
             tempPris = temppris;
 
         }
@@ -113,7 +132,7 @@ public class OrdreController {
     }
 
     public void showAllActiveOrders() {
-        orderRead.getActiveOrders();
+        ordreRead.getActiveOrders();
     }
 
     public void changeOrder() throws SQLException {
@@ -127,21 +146,34 @@ public class OrdreController {
 
     public void deleteOrder() {
         showAllOrders();
-        System.out.println("What Order do you want to change?");
+        System.out.println("What Order do you want to change?\n");
         String orderInput = userInput.nextLine();
         int choice = Integer.parseInt(orderInput);
-        writeToDB.DeleteOrder(choice);
+        writeToDB.flagOrdre(choice);
 
     }
 
     public void calculateIncome() {
-        System.out.println("Getting total income...");
-        orderRead.CalculateIncome();
+        System.out.println("Show entire years income: Press [0], \nShow todays income: Press [1]");
+        String input = userInput.nextLine();
+        switch (Integer.parseInt(input)){
+            case 0:
+                System.out.println("Getting total income...");
+                ordreRead.CalculateIncome();
+                break;
+            case 1:
+                ordreRead.calculateToDaysIncome();
+                break;
+            default:
+                System.out.println("ERROR");
+                break;
+        }
+
     }
 
     public void Getstatistics() {
         System.out.println("Please wait retrieving statistics...\n");
-        orderRead.Showstatistics();
+        ordreRead.getMostPolularPizza();
     }
 
     public void devOption() {
