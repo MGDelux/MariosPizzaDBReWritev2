@@ -14,15 +14,11 @@ public class Ordre {
     Boolean ordreStatus;
     double totalOrdrePrice = 0;
     ArrayList<Pizza> pizzasInOrdre = new ArrayList<>();
-
+//getter setters
     public boolean isHomeDelivery() {
         return homeDelivery;
     }
 
-
-    public void setHomeDelivery(boolean homeDelivery) {
-        this.homeDelivery = homeDelivery;
-    }
 
     public String getHomeAdress() {
         return homeAdress;
@@ -73,10 +69,6 @@ public class Ordre {
         return customerName;
     }
 
-    public Boolean getOrdreStatus() {
-        return ordreStatus;
-    }
-
     public double getTotalOrdrePrice() {
         return totalOrdrePrice;
     }
@@ -98,9 +90,6 @@ public class Ordre {
         this.customerName = customerName;
     }
 
-    public void setOrdreStatus(Boolean ordreStatus) {
-        this.ordreStatus = ordreStatus;
-    }
 
     public void setTotalOrdrePrice(double totalOrdrePrice) {
         this.totalOrdrePrice = totalOrdrePrice;

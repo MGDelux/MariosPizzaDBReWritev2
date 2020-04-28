@@ -8,15 +8,15 @@ public class DBConnect {
     private static DBConnect instance;
     private DBConnect() {
         try {
-            String baseurl = "jdbc:mysql://cphb-gruppe1.c4mqzn3xlkdy.us-east-2.rds.amazonaws.com/";
-            String db = "MariosPizza";
-            String timeZ = "serverTimezone=UTC&allowPublicKeyRetrieval=true";
-            String totalUrl = baseurl+db+"?"+timeZ;
-            String user = "fullroot";
-            String password = "fullroot";
-            connection = DriverManager.getConnection(totalUrl,user,password);
+            String baseurl = "jdbc:mysql://cphb-gruppe1.c4mqzn3xlkdy.us-east-2.rds.amazonaws.com/"; //url
+            String db = "MariosPizza";//database
+            String timeZ = "serverTimezone=UTC&allowPublicKeyRetrieval=true"; //noget fra thor idk wwhat it really does
+            String totalUrl = baseurl+db+"?"+timeZ; //sætter linked sammen med 'timeZ'
+            String user = "fullroot"; //username
+            String password = "fullroot"; //password
+            connection = DriverManager.getConnection(totalUrl,user,password);//opretter forbindelse
         } catch (SQLException id) {
-            System.out.println("Error: " + id.getMessage());
+            System.out.println("Error: " + id.getMessage());//fejl msg
         }
     }
     public static DBConnect getInstance() {

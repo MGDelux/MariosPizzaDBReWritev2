@@ -6,21 +6,12 @@ public class Pizza {
     double pizzaPrice;
     int pizzaStatus;
 
-    public Pizza(int pizzaNR, String pizzaName, double pizzaPrice,int pizzaStatus) {
+    public Pizza(int pizzaNR, String pizzaName, double pizzaPrice,int pizzaStatus) {//datatype
         this.pizzaNR = pizzaNR;
         this.pizzaName = pizzaName;
         this.pizzaPrice = pizzaPrice;
         this.pizzaStatus = pizzaStatus;
     }
-
-    public int getPizzaStatus() {
-        return pizzaStatus;
-    }
-
-    public void setPizzaStatus(int pizzaStatus) {
-        this.pizzaStatus = pizzaStatus;
-    }
-
     public double getPizzaPrice() {
         return pizzaPrice;
     }

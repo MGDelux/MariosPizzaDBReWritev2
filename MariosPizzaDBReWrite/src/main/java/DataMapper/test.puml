@@ -1,25 +1,65 @@
 @startuml
 
-class Main {
-mainControler():void
+package View <<Rectangle>> {
+class MainControler
 }
 
-class Pizza {
-pizzaNumber:int
-pizzaName:String
-pizzaPrice:double
-thePizza:Pizza
-pizzas:ArrayList<Pizza>
-importPizzaFromFileIntoArray():ArrayList<Pizza>
-getPizzaByNR(int):Pizza
-getPizzaPrice():double
-toString():String
+package Util <<Rectangle>> {
+class DBConnect
 }
 
-class MenuKort{
-importedPizzas:ArrayList<Pizza>
-importFile:Import
-printMenu():void
+package DataMapper <<Rectangle>> {
+class MenuKortRead{
+getQueryJDBC()
+tempPizzas
+USERNAME
+PASSWORD<
+CONN_STR
+}
+
+class OrdreRead{
+getNewPizzaID()
+getOrderHighestID()
+getOrders()
+getActiveOrders()
+CalculateIncome()
+getMostPolularPizza()
+calculateToDaysIncome()
+USERNAME
+PASSWORD
+CONN_STR
+}
+
+class OrdreWrite{
+exportData()
+addNewPizzaMenu()
+flagPizza()
+changeOrderStatus()
+flagOrdre()
+turnCateTable()
+temporder
+tempUID
+tempPizzaCounter
+USERNAME
+PASSWORD
+CONN_STR
+}
+
+}
+
+package Model <<Rectangle>> {
+
+class MenuController{
+orders:ArrayList<Order>
+activeOrder:ArrayList<Order>
+scan:Scanner
+makeAnOrder():void
+displayAllOrders():void
+displayActiveOrders():void
+changeOrder():void
+deleteOrder(ArrayList<Order>):void
+calculateIncome():void
+getOrders():ArrayList<Order>
 }
 
 class Order{
@@ -47,22 +87,74 @@ formatSelectedPizzasToString():String
 toString():String
 }
 
-class MenuController{
-orders:ArrayList<Order>
-activeOrder:ArrayList<Order>
-scan:Scanner
-makeAnOrder():void
-displayAllOrders():void
-displayActiveOrders():void
-changeOrder():void
-deleteOrder(ArrayList<Order>):void
-calculateIncome():void
-getOrders():ArrayList<Order>
+class Pizza {
+pizzaNumber:int
+pizzaName:String
+pizzaPrice:double
+thePizza:Pizza
+pizzas:ArrayList<Pizza>
+importPizzaFromFileIntoArray():ArrayList<Pizza>
+getPizzaByNR(int):Pizza
+getPizzaPrice():double
+toString():String
 }
 
-Main <|-- MenuKort
-Main <|-- OrderBook
-MenuKort o-- Pizza
-OrderBook o-- Order
+class MenuKort{
+importedPizzas:ArrayList<Pizza>
+importFile:Import
+printMenu():void
+}
 
+class OrderConroller{
+mySQLUIDCheck()
+populateMenuKort()
+getPizzas()
+getSpecficPizza()
+showAllOrders()
+makeOrder()
+getCustomerName()
+generateOrderUID()
+completeOrder()
+getOrderTime()
+setOrderLength()
+addPizzasToOrder()
+generatePris()
+showAllActiveOrders()
+changeOrder()
+deleteOrder()
+calculateIncome()
+Getstatistics()
+devOption()
+temppris
+tempUID
+readData
+tempCustomerName
+tempOrderTimeLenght
+tempPris
+tempOrderTime
+tempPizza
+menu
+writeToDB
+newOrdre
+userInput
+ordreRead
+importMenuKort
+}
+
+
+
+
+}
+
+
+Main <|-- View
+MainControler <|-- OrderConroller
+OrderConroller <|-- Order
+MainControler <|-- MenuController
+MenuController <|-- MenuKort
+Order o-- Pizza
+Util --|> DataMapper
+OrderConroller <|-- OrdreRead
+OrderConroller <|-- OrdreWrite
+MenuKort <|-- MenuKortRead
 @enduml

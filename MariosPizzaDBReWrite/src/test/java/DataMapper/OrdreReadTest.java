@@ -18,7 +18,7 @@ public class OrdreReadTest {
 
     @Test
     public void getOrderHighestID() {
-      tempUID =   read.getOrderHighestID();
+      tempUID =  read.getOrderHighestID();
 
     }
 }

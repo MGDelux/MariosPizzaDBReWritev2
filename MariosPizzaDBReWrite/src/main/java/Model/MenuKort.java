@@ -7,12 +7,7 @@ public class MenuKort {
 public void wipePizzas(){
     pizzas.clear();
 }
-    public void AddPizzaToArray(ArrayList<Pizza> temp) {
-        for (Pizza p : temp) {
-            pizzas.add(p);
-        }
-    }
-    public Pizza GetPizzaByNR(int pizzanr){
+    public Pizza GetPizzaByNR(int pizzanr){//finder bestemt pizza beseret på intastet nmr
         Pizza thePizza = pizzas.get(pizzanr-1);
         System.out.println(thePizza);
         return thePizza;
